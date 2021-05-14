@@ -1,12 +1,12 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" v-loading:[loadingTitle]='loading'>
     <scroll class="recommend-content" >
       <div>
         <div class="swiper-content">
           <swiper :sliders="sliders"></swiper>
         </div>
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
+          <h1 class="list-title" v-show="!loading">热门歌单推荐</h1>
           <ul>
             <li class="list-item" v-for="item in albums" :key="item.id">
               <div class="icon">
@@ -40,6 +40,12 @@ export default {
     return {
       sliders: [],
       albums: [],
+      loadingTitle:'加载中...'
+    }
+  },
+  computed:{
+    loading() {
+      return !this.sliders.length && !this.albums.length
     }
   },
   async created() {
@@ -53,6 +59,7 @@ export default {
 .recommend {
     position: fixed;
     width: 100%;
+    // height: 100%;
     top: 88px;
     bottom: 0;
     overflow: scroll;
