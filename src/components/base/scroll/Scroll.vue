@@ -22,11 +22,21 @@ export default {
       default: 0,
     },
   },
-  setup(props) {
+  emits:['scroll'],
+  setup(props,{emit}) {
     const rootRef = ref(rootRef)
     const scroll = ref(null)
     onMounted(() => {
-      scroll.value = new BScroll(rootRef.value, { observeDOM: true, ...props })
+      const scrollVal = (scroll.value = new BScroll(rootRef.value, {
+        observeDOM: true,
+        ...props,
+      }))
+
+      if (props.probeType > 0) {
+        scrollVal.on('scroll',(pos) => {
+          emit('scroll',pos)
+        })
+      }
     })
     onUnmounted(() => {
       scroll.value.destroy()

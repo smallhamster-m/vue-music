@@ -2,7 +2,9 @@
   <div id="nav">
     <music-header></music-header>
     <tab></tab>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -11,15 +13,11 @@ import Tab from '@/components/tab/Tab'
 export default {
   components: {
     MusicHeader,
-    Tab
+    Tab,
   },
   data() {
-    return {
-      
-    }
+    return {}
   },
 }
-
-
 </script>
 <style lang="scss"></style>
