@@ -2,9 +2,7 @@
   <div id="nav">
     <music-header></music-header>
     <tab></tab>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </div>
 </template>
 <script>

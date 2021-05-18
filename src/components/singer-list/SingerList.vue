@@ -19,12 +19,31 @@
     <div class="fixed" :style="fixedStyle" v-show="currentTitle">
       <div class="fixed-title">{{ currentTitle }}</div>
     </div>
+    <div
+      class="shortcut"
+      @touchstart.stop.prevent="onShortcutTouchStart"
+      @touchmove.stop.prevent="onShortcutTouchMove"
+      @touchend.stop.prevent="onShortcutTouchEnd"
+    >
+      <ul>
+        <li
+          class="item"
+          v-for="(item, index) in shortcutList"
+          :data-index="index"
+          :key="item"
+          :class="{ current: currentIndex === index }"
+        >
+          {{ item }}
+        </li>
+      </ul>
+    </div>
   </scroll>
 </template>
 
 <script>
 import Scroll from '../base/scroll/Scroll'
 import fixedTitle from './fixed-title'
+import shortcut from './shortcut'
 export default {
   name: 'SingerList',
   components: { Scroll },
@@ -37,13 +56,20 @@ export default {
     },
   },
   setup(props) {
-    const { groupRef, onScroll, currentTitle, fixedStyle } = fixedTitle(props)
+    const { groupRef, onScroll, currentTitle,currentIndex, fixedStyle } = fixedTitle(props)
+
+    const { shortcutList, onShortcutTouchStart, scrollRef,onShortcutTouchMove } = shortcut(props,groupRef)
 
     return {
       groupRef,
       onScroll,
       currentTitle,
+      currentIndex,
       fixedStyle,
+      shortcutList,
+      onShortcutTouchStart,
+      scrollRef,
+      onShortcutTouchMove
     }
   },
 }
@@ -94,6 +120,27 @@ export default {
       font-size: $font-size-small;
       color: $color-text-l;
       background: $color-highlight-background;
+    }
+  }
+  .shortcut {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    padding: 20px 0;
+    border-radius: 10px;
+    text-align: center;
+    background: $color-background-d;
+    font-family: Helvetica;
+    .item {
+      padding: 3px;
+      line-height: 1;
+      color: $color-text-l;
+      font-size: $font-size-small;
+      &.current {
+        color: $color-theme;
+      }
     }
   }
 }
